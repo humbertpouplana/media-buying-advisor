@@ -1,0 +1,463 @@
+{
+ "model_version": "0.2.0",
+ "params": {
+  "model_version": "0.2.0",
+  "damping": 0.7,
+  "projection": {
+   "months": 6,
+   "ramp_months": 3
+  },
+  "capacity_cpc_elasticity": 0.3,
+  "worked_example": {
+   "spend": 20000,
+   "roas": 0.9,
+   "cpc": 0.95,
+   "cvr": 0.09,
+   "impression_share": 15
+  },
+  "plan_ids": [
+   "cpl",
+   "excl",
+   "lowq",
+   "neg",
+   "lp"
+  ],
+  "tornado_shock": 0.2,
+  "capacity_targets": [
+   15,
+   25,
+   35,
+   45,
+   60
+  ]
+ },
+ "p2": {
+  "base": {
+   "spend": 20000,
+   "clicks": 21052.63157894737,
+   "leads": 1894.7368421052633,
+   "epl": 9.5,
+   "rev": 18000.0,
+   "profit": -2000.0,
+   "roas": 0.9,
+   "cpl": 10.555555555555555,
+   "cpc": 0.95,
+   "cvr": 0.09
+  },
+  "acts": [
+   {
+    "id": "cpl",
+    "t": "Enviar se\u00f1al CPL con valor parecido al EPL en la primera llamada",
+    "effort": 2,
+    "imp": {
+     "lo": 812.0000000000036,
+     "mid": 1772.0000000000036,
+     "hi": 2839.9999999999964
+    },
+    "eff": {
+     "v": [
+      0.05,
+      0.15
+     ],
+     "s": [
+      0.08,
+      0.2
+     ]
+    }
+   },
+   {
+    "id": "excl",
+    "t": "Excluir por API a todos los usuarios que ya est\u00e1n en tu base de datos",
+    "effort": 2,
+    "imp": {
+     "lo": 900.0,
+     "mid": 1827.4111675126878,
+     "hi": 2783.505154639177
+    },
+    "eff": {
+     "e": [
+      0.05,
+      0.12
+     ],
+     "c": [
+      -0.03,
+      0
+     ]
+    }
+   },
+   {
+    "id": "lowq",
+    "t": "Separar las keywords de baja calidad (por ejemplo ASNEF) con campa\u00f1a y landing propias",
+    "effort": 2,
+    "imp": {
+     "lo": 1298.9690721649495,
+     "mid": 2380.9523809523816,
+     "hi": 3521.739130434784
+    },
+    "eff": {
+     "e": [
+      0.04,
+      0.1
+     ],
+     "c": [
+      -0.08,
+      -0.03
+     ]
+    }
+   },
+   {
+    "id": "neg",
+    "t": "Negativizar keywords por valor de conversi\u00f3n por partner, no desde el d\u00eda 1",
+    "effort": 2,
+    "imp": {
+     "lo": 1515.78947368421,
+     "mid": 2754.0983606557347,
+     "hi": 4090.9090909090955
+    },
+    "eff": {
+     "c": [
+      -0.12,
+      -0.05
+     ],
+     "e": [
+      0.03,
+      0.08
+     ]
+    }
+   },
+   {
+    "id": "match",
+    "t": "Probar phrase y broad con tCPA y unos 500 \u20ac al d\u00eda para campa\u00f1as nuevas",
+    "effort": 2,
+    "imp": {
+     "lo": -2000.0,
+     "mid": -2113.7440758293815,
+     "hi": -2038.8349514563088
+    },
+    "eff": {
+     "s": [
+      0.2,
+      0.6
+     ],
+     "c": [
+      0.03,
+      0.08
+     ]
+    }
+   },
+   {
+    "id": "brand",
+    "t": "Campa\u00f1as de marca y de competidores con presupuesto sin l\u00edmite",
+    "effort": 1,
+    "imp": {
+     "lo": 285.71428571428623,
+     "mid": 625.0,
+     "hi": 1021.2765957446827
+    },
+    "eff": {
+     "s": [
+      0.05,
+      0.15
+     ],
+     "c": [
+      -0.06,
+      -0.02
+     ]
+    }
+   },
+   {
+    "id": "lp",
+    "t": "Landing page y pingtree propios por campa\u00f1a",
+    "effort": 3,
+    "imp": {
+     "lo": 2023.2000000000044,
+     "mid": 3648.600000000002,
+     "hi": 5328.000000000004
+    },
+    "eff": {
+     "v": [
+      0.08,
+      0.2
+     ],
+     "e": [
+      0.03,
+      0.08
+     ]
+    }
+   },
+   {
+    "id": "form",
+    "t": "Acortar el formulario y medir eventos por paso",
+    "effort": 2,
+    "imp": {
+     "lo": 900.0000000000036,
+     "mid": 1800.0000000000073,
+     "hi": 2700.0
+    },
+    "eff": {
+     "v": [
+      0.05,
+      0.15
+     ]
+    }
+   },
+   {
+    "id": "ads",
+    "t": "Reescribir los anuncios con los mensajes que usan los competidores y t\u00fa no",
+    "effort": 1,
+    "imp": {
+     "lo": 1531.914893617024,
+     "mid": 2916.2011173184364,
+     "hi": 4447.058823529409
+    },
+    "eff": {
+     "c": [
+      -0.15,
+      -0.06
+     ],
+     "v": [
+      0.02,
+      0.06
+     ]
+    }
+   },
+   {
+    "id": "pmax",
+    "t": "Destinar un 20 % a PMax y Demand Gen con creatividades probadas en Meta",
+    "effort": 3,
+    "imp": {
+     "lo": -1142.8571428571413,
+     "mid": -400.0,
+     "hi": 631.5789473684199
+    },
+    "eff": {
+     "s": [
+      0.1,
+      0.3
+     ],
+     "c": [
+      -0.05,
+      0.05
+     ]
+    }
+   },
+   {
+    "id": "ping",
+    "t": "Reordenar el pingtree por EPL y sumar partners",
+    "effort": 2,
+    "imp": {
+     "lo": 900.0,
+     "mid": 1800.0000000000036,
+     "hi": 2700.0
+    },
+    "eff": {
+     "e": [
+      0.05,
+      0.15
+     ]
+    }
+   },
+   {
+    "id": "sched",
+    "t": "Ajustar horarios, dispositivos y geograf\u00edas con peor retorno",
+    "effort": 1,
+    "imp": {
+     "lo": 750.0,
+     "mid": 1354.8387096774204,
+     "hi": 2000.0
+    },
+    "eff": {
+     "c": [
+      -0.1,
+      -0.04
+     ]
+    }
+   },
+   {
+    "id": "crm",
+    "t": "Sustituir el remarketing de Google por un flujo de email y SMS",
+    "effort": 2,
+    "imp": {
+     "lo": 720.0000000000036,
+     "mid": 1241.5000000000036,
+     "hi": 1790.0
+    },
+    "eff": {
+     "e": [
+      0.04,
+      0.1
+     ],
+     "s": [
+      0,
+      0.05
+     ]
+    }
+   },
+   {
+    "id": "track",
+    "t": "Auditar el tracking server-side por gclid y el env\u00edo de valores a Google",
+    "effort": 2,
+    "imp": {
+     "lo": 1278.0000000000036,
+     "mid": 3060.0000000000036,
+     "hi": 4896.0
+    },
+    "eff": {
+     "v": [
+      0.05,
+      0.2
+     ],
+     "e": [
+      0.02,
+      0.06
+     ]
+    }
+   },
+   {
+    "id": "cadence",
+    "t": "Revisi\u00f3n diaria, optimizaci\u00f3n semanal y registro de cada cambio",
+    "effort": 1,
+    "imp": {
+     "lo": 734.6938775510207,
+     "mid": 1305.699481865282,
+     "hi": 1894.7368421052633
+    },
+    "eff": {
+     "c": [
+      -0.05,
+      -0.02
+     ],
+     "v": [
+      0.02,
+      0.05
+     ]
+    }
+   }
+  ],
+  "plan": {
+   "ids": [
+    "cpl",
+    "excl",
+    "lowq",
+    "neg",
+    "lp"
+   ],
+   "proj": {
+    "base": [
+     -2000.0,
+     -2000.0,
+     -2000.0,
+     -2000.0,
+     -2000.0,
+     -2000.0
+    ],
+    "lo": [
+     -243.26155191355315,
+     1513.4768961728937,
+     3270.215344259341,
+     3270.215344259341,
+     3270.215344259341,
+     3270.215344259341
+    ],
+    "mid": [
+     1714.9121756116401,
+     5429.82435122328,
+     9144.73652683492,
+     9144.73652683492,
+     9144.73652683492,
+     9144.73652683492
+    ],
+    "hi": [
+     4231.457630743514,
+     10462.915261487027,
+     16694.37289223054,
+     16694.37289223054,
+     16694.37289223054,
+     16694.37289223054
+    ]
+   },
+   "roas": [
+    1.154839741678946,
+    1.4164269820963078,
+    1.7322093373785326
+   ]
+  },
+  "tor": [
+   [
+    "CPC -20%",
+    4499.999999999996
+   ],
+   [
+    "CPC +20%",
+    -3000.0
+   ],
+   [
+    "CVR +20%",
+    3600.0
+   ],
+   [
+    "CVR -20%",
+    -3599.9999999999964
+   ],
+   [
+    "EPL +20%",
+    3600.0000000000036
+   ],
+   [
+    "EPL -20%",
+    -3599.999999999998
+   ],
+   [
+    "Volume +20%",
+    -400.0
+   ],
+   [
+    "Volume -20%",
+    400.0000000000018
+   ]
+  ],
+  "cap": [
+   [
+    15,
+    {
+     "clicks": 21052.63157894737,
+     "extra": 0.0,
+     "cpcUp": 0.0
+    }
+   ],
+   [
+    25,
+    {
+     "clicks": 35087.71929824562,
+     "extra": 14035.087719298248,
+     "cpcUp": 0.2
+    }
+   ],
+   [
+    35,
+    {
+     "clicks": 49122.80701754387,
+     "extra": 28070.175438596496,
+     "cpcUp": 0.4
+    }
+   ],
+   [
+    45,
+    {
+     "clicks": 63157.89473684211,
+     "extra": 42105.26315789474,
+     "cpcUp": 0.6
+    }
+   ],
+   [
+    60,
+    {
+     "clicks": 84210.52631578948,
+     "extra": 63157.89473684211,
+     "cpcUp": 0.8999999999999999
+    }
+   ]
+  ],
+  "be": 0.855
+ }
+}

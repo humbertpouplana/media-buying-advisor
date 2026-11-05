@@ -1,0 +1,5 @@
+"""English labels of the 15 catalogue actions (used by figures and the paper)."""
+ACT_EN={'cpl':'Send a CPL signal valued close to EPL on first-call acceptance','excl':'Exclude existing database users through an API','lowq':'Separate low-quality keywords into own campaigns and landing pages','neg':'Add negative keywords from per-partner conversion value, not on day one',
+ 'match':'Test phrase and broad match with target CPA, about 500 EUR/day for new campaigns','brand':'Uncapped branded and competitor campaigns','lp':'Per-campaign landing page and pingtree','form':'Shorten the form and track step-level events','ads':'Rewrite ads with messages competitors use and you do not',
+ 'pmax':'Allocate about 20\\% to PMax and Demand Gen with proven creatives','ping':'Reorder the pingtree by EPL and add partners','sched':'Adjust schedules, devices and geographies with poor returns','crm':'Replace platform remarketing with an email and SMS flow',
+ 'track':'Audit server-side tracking by click ID and value feedback','cadence':'Daily review, weekly optimisation and a change log'}

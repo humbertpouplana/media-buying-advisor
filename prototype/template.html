@@ -1,0 +1,530 @@
+<title>Media Buying Advisor</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* Mismo sistema visual que Pingtree Forecast: oscuro, DM Sans / DM Mono, azul de acento. */
+:root{
+  --bg:#0f1117; --bg2:#161b25; --bg3:#1d2433; --border:rgba(255,255,255,.07); --border2:rgba(255,255,255,.13);
+  --text:#e8eaf0; --text2:#8b92a8; --text3:#6d7692; --accent:#4f8ef7; --accent2:#3a6fd4; --accent-soft:rgba(79,142,247,.12);
+  --green:#2ecc8a; --green-bg:rgba(46,204,138,.1); --amber:#f5a623; --amber-bg:rgba(245,166,35,.1); --red:#f75959; --red-bg:rgba(247,89,89,.1);
+  --grid:rgba(255,255,255,.07);
+  --c1:#4f8ef7; --c2:#2ecc8a; --c3:#f5a623; --c4:#a78bfa; --c5:#2dd4bf; --c6:#f472b6; --c7:#f75959; --c8:#8b92a8;
+  --f-sans:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif; --f-mono:'DM Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#f2f4f8; --bg2:#ffffff; --bg3:#eceff6; --border:rgba(20,30,60,.09); --border2:rgba(20,30,60,.17);
+    --text:#161b2a; --text2:#566079; --text3:#6d7690; --accent:#2f6fe0; --accent2:#2a5fc4; --accent-soft:rgba(47,111,224,.1);
+    --green:#12905a; --green-bg:rgba(18,144,90,.09); --amber:#a8670a; --amber-bg:rgba(168,103,10,.1); --red:#c8372f; --red-bg:rgba(200,55,47,.09);
+    --grid:rgba(20,30,60,.08);
+    --c1:#2f6fe0; --c2:#12905a; --c3:#c47d0c; --c4:#7c5ce0; --c5:#0f9e8f; --c6:#d4467f; --c7:#c8372f; --c8:#6d7690; color-scheme:light;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#f2f4f8; --bg2:#ffffff; --bg3:#eceff6; --border:rgba(20,30,60,.09); --border2:rgba(20,30,60,.17);
+  --text:#161b2a; --text2:#566079; --text3:#6d7690; --accent:#2f6fe0; --accent2:#2a5fc4; --accent-soft:rgba(47,111,224,.1);
+  --green:#12905a; --green-bg:rgba(18,144,90,.09); --amber:#a8670a; --amber-bg:rgba(168,103,10,.1); --red:#c8372f; --red-bg:rgba(200,55,47,.09);
+  --grid:rgba(20,30,60,.08);
+  --c1:#2f6fe0; --c2:#12905a; --c3:#c47d0c; --c4:#7c5ce0; --c5:#0f9e8f; --c6:#d4467f; --c7:#c8372f; --c8:#6d7690; color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--f-sans);font-size:14px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--bg2)}
+h1,h2,h3,h4,p{margin:0}
+.wrap{max-width:1400px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top{background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:env(safe-area-inset-top,0px);z-index:15}
+.top .wrap{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;justify-content:space-between;padding-block:14px}
+.top h1{font-size:18px;font-weight:600;letter-spacing:-.3px}
+.top p{font-size:12px;color:var(--text2);margin-top:2px}
+.anchors{display:flex;gap:4px;overflow-x:auto}
+.anchors a{color:var(--text2);text-decoration:none;font-size:13px;font-weight:500;padding:6px 11px;border-radius:6px;white-space:nowrap}
+.anchors a:hover{background:var(--bg3);color:var(--text)}
+main .wrap{padding-block:22px 60px;display:flex;flex-direction:column;gap:20px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px;min-width:0}
+.card h3{font-size:14px;font-weight:600;margin-bottom:3px}
+.card .hint{font-size:12px;color:var(--text2);margin-bottom:12px;max-width:80ch}
+.sec-title{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text2);margin-bottom:-8px}
+.brief{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px 20px;align-items:end}
+.f{display:flex;flex-direction:column;gap:5px;min-width:0}
+.f>label,.lbl{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+input[type=text],input[type=number],select,textarea{font:500 13px var(--f-sans);color:var(--text);background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:8px 10px;width:100%;min-width:0}
+textarea{font-weight:400;line-height:1.5;resize:vertical;min-height:120px}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.prob{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.pill{appearance:none;font:500 12.5px var(--f-sans);color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:999px;padding:7px 13px;cursor:pointer}
+.pill:hover{border-color:var(--accent);color:var(--text)}
+.pill[aria-pressed="true"]{background:var(--accent2);border-color:var(--accent2);color:#fff}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.links a{font:500 12.5px var(--f-sans);color:var(--accent);text-decoration:none;border:1px solid var(--border2);border-radius:6px;padding:7px 12px;background:var(--bg3)}
+.links a:hover{border-color:var(--accent)}
+.assump{margin-top:14px;padding:10px 12px;border:1px dashed var(--border2);border-radius:8px;background:var(--amber-bg);color:var(--text);font-size:12.5px}
+.assump b{color:var(--amber)}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.scard{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;min-width:0}
+.scard .l{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.scard .v{font:600 22px var(--f-mono);letter-spacing:-.5px;overflow-wrap:anywhere}
+.scard .s{font-size:11.5px;color:var(--text3);margin-top:3px}
+.scard.main{border-color:var(--accent2);background:linear-gradient(0deg,var(--accent-soft),var(--accent-soft)),var(--bg2)}
+.good{color:var(--green)} .mid{color:var(--amber)} .bad{color:var(--red)}
+.btn{font:500 12.5px var(--f-sans);padding:7px 13px;border-radius:6px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{font-size:10.5px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;font-weight:500;text-align:right;padding:6px 10px;white-space:nowrap;border-bottom:1px solid var(--border2)}
+td{padding:9px 10px;border-bottom:1px solid var(--border);text-align:right;font:500 12.5px var(--f-mono);white-space:nowrap;vertical-align:middle}
+th.tl,td.tl{text-align:left}
+td.name{font:600 13px var(--f-sans);white-space:normal;min-width:200px}
+td .sub{display:block;font:400 11.5px var(--f-sans);color:var(--text2);margin-top:2px;white-space:normal;max-width:60ch}
+tr.dim td{opacity:.45}
+.tag{font-size:10px;font-family:var(--f-sans);color:var(--amber);background:var(--amber-bg);border:1px solid rgba(245,166,35,.25);border-radius:3px;padding:0 5px;margin-left:5px;white-space:nowrap}
+.tag.g{color:var(--green);background:var(--green-bg);border-color:rgba(46,204,138,.3)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:16px}
+.cbox{position:relative;height:300px;min-width:0}
+.kv{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:12.5px;color:var(--text2);margin-top:10px}
+.kv b{font:500 12.5px var(--f-mono);color:var(--text)}
+.insight{margin-top:10px;font-size:12.5px;color:var(--text2);border-left:2px solid var(--accent2);padding-left:10px}
+.alerts{display:flex;flex-direction:column;gap:8px}
+.alert{border:1px solid var(--border2);border-left-width:3px;border-radius:6px;padding:9px 12px;font-size:13px;background:var(--bg3)}
+.alert.r{border-left-color:var(--red)} .alert.a{border-left-color:var(--amber)} .alert.g{border-left-color:var(--green)}
+.alert b{font-weight:600}
+.heat td{text-align:center;font-size:11.5px;padding:7px 6px;border:1px solid var(--bg2)}
+.heat th{text-align:center}
+.pb{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.pcard{border:1px solid var(--border);border-radius:8px;padding:12px 14px;background:var(--bg3)}
+.pcard h4{font-size:13px;margin-bottom:4px}
+.pcard p{font-size:12.5px;color:var(--text2)}
+.pcard .m{display:flex;gap:10px;flex-wrap:wrap;font:500 11.5px var(--f-mono);margin-top:8px;color:var(--text)}
+.chk{accent-color:var(--accent);width:16px;height:16px}
+.foot{font-size:12px;color:var(--text3);max-width:100ch}
+.twocol{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px}
+@media (max-width:640px){ .scard .v{font-size:19px} }
+</style>
+
+<header class="top"><div class="wrap">
+  <div><h1>Media Buying Advisor</h1><p>Diagnóstico de cuenta, competidores y plan de acciones con uplift estimado · lenders y brokers financieros</p></div>
+  <nav class="anchors" aria-label="Secciones"><a href="#brief">Brief</a><a href="#diag">Diagnóstico</a><a href="#account">Cuenta</a><a href="#comp">Competidores</a><a href="#ads">Anuncios</a><a href="#plan">Plan</a><a href="#proj">Proyección</a><a href="#notes">Método</a></nav>
+</div></header>
+
+<main><div class="wrap">
+
+<section class="card" id="brief">
+  <h3>Brief del anunciante</h3>
+  <p class="hint">Escribe el nombre del lender o broker e introduce tus cifras. Si quieres partir de datos reales, elige una cuenta de la cartera de referencia y se rellenan inversión, ROAS y cuota de impresiones.</p>
+  <div class="brief">
+    <div class="f"><label for="f-name">Anunciante</label><input id="f-name" type="text" placeholder="Nombre del lender o broker" autocomplete="off"></div>
+    <div class="f"><label for="f-acct">Cuenta de referencia</label><select id="f-acct"></select></div>
+    <div class="f"><label for="f-mkt">Mercado</label><select id="f-mkt"></select></div>
+    <div class="f"><label for="f-spend">Inversión mensual (€)</label><input id="f-spend" type="number" min="100" step="500"></div>
+    <div class="f"><label for="f-roas">ROAS actual (1,00 = 100 %)</label><input id="f-roas" type="number" min="0.05" max="5" step="0.01"></div>
+    <div class="f"><label for="f-cpc">CPC medio (€)</label><input id="f-cpc" type="number" min="0.02" step="0.05"></div>
+    <div class="f"><label for="f-cvr">Conversión clic → lead (%)</label><input id="f-cvr" type="number" min="0.5" max="60" step="0.5"></div>
+    <div class="f"><label for="f-is">Cuota de impresiones (%)</label><input id="f-is" type="number" min="1" max="100" step="1"></div>
+  </div>
+  <div class="prob" id="probs" role="group" aria-label="Problemas"></div>
+  <div class="links" id="links"></div>
+  <div class="assump" id="src-note"></div>
+</section>
+
+<div id="kpis" class="strip" aria-live="polite"></div>
+
+<section class="card" id="diag">
+  <h3>Diagnóstico</h3>
+  <p class="hint">Lectura automática de tus cifras: dónde se pierde dinero, qué punto de equilibrio tienes y cuánto volumen te queda por capturar.</p>
+  <div class="alerts" id="alerts"></div>
+  <div class="grid2" style="margin-top:16px">
+    <div><h3>Embudo mensual</h3><p class="hint">De la inversión al revenue con tus ratios.</p><div class="cbox"><canvas id="chFun"></canvas></div></div>
+    <div><h3>Mapa de rentabilidad: CPC frente a conversión</h3><p class="hint">ROAS resultante con tu EPL. En verde, por encima de 100 %. La celda con borde es tu posición.</p><div class="scroll" id="heat"></div></div>
+  </div>
+</section>
+
+<div class="sec-title" id="account">Tu cuenta y la cartera de referencia</div>
+<div class="grid2">
+  <div class="card"><h3>Inversión y ROAS mensual</h3><p class="hint" id="h-hist"></p><div class="cbox"><canvas id="chHist"></canvas></div><div class="insight" id="in-hist"></div></div>
+  <div class="card"><h3>ROAS por campaña</h3><p class="hint">Última semana frente a la anterior, en la última foto de campañas disponible.</p><div class="cbox"><canvas id="chCamp"></canvas></div><div class="insight" id="in-camp"></div></div>
+  <div class="card"><h3>Tu ROAS frente a la cartera</h3><p class="hint">ROAS medio de los últimos 3 meses cerrados de cada cuenta de la cartera de referencia. La barra naranja eres tú.</p><div class="cbox"><canvas id="chBench"></canvas></div></div>
+  <div class="card"><h3>Reparto de inversión por cuenta</h3><p class="hint">Inversión mensual de la cartera desde enero de 2025.</p><div class="cbox"><canvas id="chMix"></canvas></div></div>
+</div>
+
+<div class="sec-title" id="comp">Competidores en la subasta</div>
+<div class="grid2">
+  <div class="card"><h3>Quién aparece más en tu subasta</h3><p class="hint" id="h-comp"></p><div class="cbox"><canvas id="chComp"></canvas></div><div class="insight" id="in-comp"></div></div>
+  <div class="card"><h3>Cuota de impresiones y posición</h3><p class="hint">Evolución semanal agregada por mes. Cuota más baja significa más tráfico por capturar si el ROAS lo permite.</p><div class="cbox"><canvas id="chIS"></canvas></div></div>
+  <div class="card"><h3>Presión competitiva</h3><p class="hint">Número de competidores en la subasta y cuota del líder.</p><div class="cbox"><canvas id="chPress"></canvas></div></div>
+  <div class="card"><h3>Capacidad de tráfico sin capturar</h3><p class="hint">Clics adicionales posibles al subir la cuota de impresiones. Se asume que el CPC sube un 0,3 % por cada 1 % de clics extra (hipótesis).</p><div class="cbox"><canvas id="chCap"></canvas></div><div class="insight" id="in-cap"></div></div>
+</div>
+
+<section class="card" id="ads">
+  <h3>Comparador de anuncios</h3>
+  <p class="hint">Esta página no puede consultar Google Ads ni Meta en vivo. Usa los enlaces del brief para abrir la Transparencia de anuncios de Google y la Biblioteca de anuncios de Meta, copia los textos de los competidores y pégalos aquí (un titular o descripción por línea).</p>
+  <div class="twocol">
+    <div class="f"><label for="t-own">Tus anuncios</label><textarea id="t-own"></textarea></div>
+    <div class="f"><label for="t-comp">Anuncios de competidores</label><textarea id="t-comp"></textarea></div>
+  </div>
+  <div class="assump"><b>Textos de ejemplo.</b> Los anuncios precargados son ilustrativos, no proceden de ningún anunciante real. Sustitúyelos por los tuyos.</div>
+  <div class="grid2" style="margin-top:16px">
+    <div><h3>Mensajes que usa cada lado</h3><p class="hint">Porcentaje de líneas que incluyen cada tipo de mensaje.</p><div class="cbox"><canvas id="chAds"></canvas></div></div>
+    <div><h3>Huecos y oportunidades</h3><p class="hint">Mensajes que usa la competencia y tú no, y al revés.</p><div class="alerts" id="gaps"></div><div class="kv" id="kv-ads"></div></div>
+  </div>
+</section>
+
+<section class="card" id="plan">
+  <h3>Plan de acciones con uplift estimado</h3>
+  <p class="hint">Cada acción mueve una o varias palancas del embudo (CPC, conversión, EPL, volumen). El impacto se calcula sobre tu cuenta con un rango bajo–alto. Marca las que quieres incluir en el plan combinado.</p>
+  <div class="scroll"><table id="plan-table"></table></div>
+  <div class="grid2" style="margin-top:16px">
+    <div><h3>Impacto por acción (€ de beneficio al mes)</h3><p class="hint">La barra va del escenario bajo al alto.</p><div class="cbox" id="impbox"><canvas id="chImp"></canvas></div></div>
+    <div><h3>Sensibilidad de las palancas (±20 %)</h3><p class="hint">Qué palanca mueve más tu beneficio mensual.</p><div class="cbox"><canvas id="chTor"></canvas></div></div>
+  </div>
+</section>
+
+<section class="card" id="proj">
+  <h3>Proyección a 6 meses</h3>
+  <p class="hint">Beneficio mensual de media buying (revenue menos inversión) sin cambios frente al plan elegido. Las mejoras entran de forma gradual durante 3 meses y las acciones que se solapan se descuentan un 30 %.</p>
+  <div class="grid2">
+    <div><div class="cbox"><canvas id="chProj"></canvas></div></div>
+    <div><div class="cbox"><canvas id="chWf"></canvas></div></div>
+  </div>
+  <div class="kv" id="kv-proj"></div>
+</section>
+
+<section class="card">
+  <h3>Cadencia de trabajo recomendada</h3>
+  <p class="hint">Basada en el Q&A de media buying de Brestify OU.</p>
+  <div class="pb" id="cad"></div>
+</section>
+
+<section class="card" id="notes">
+  <h3>Método y límites</h3>
+  <div class="kv" style="display:block;line-height:1.7">
+    <p><b>Fuentes:</b> fuentes anonimizadas de datos (inversión, ROAS, campañas y auction insights de 9 cuentas, de diciembre de 2023 a abril de 2026; abril incompleto). Las cuentas y los competidores aparecen con nombres genéricos.</p>
+    <p><b>Fórmulas:</b> clics = inversión ÷ CPC. Leads = clics × conversión. CPL = CPC ÷ conversión. EPL = ROAS × CPC ÷ conversión. Revenue = inversión × ROAS. Beneficio = revenue − inversión. CPC de equilibrio = conversión × EPL.</p>
+    <p><b>Uplifts:</b> los rangos de cada acción son hipótesis mías construidas sobre los principios del Q&A. No son resultados medidos. Mídelos con tests y ajústalos.</p>
+    <p><b>Competidores y anuncios:</b> los competidores se identifican con nombres genéricos a partir de los auction insights. Los textos de anuncios los pegas tú. No se hace scraping.</p>
+    <p><b>Beneficio:</b> es revenue menos inversión publicitaria. No incluye personal, herramientas ni costes de partners.</p>
+  </div>
+  <p class="foot" style="margin-top:12px">Los textos de anuncios financieros deben cumplir la política de Google para servicios financieros y la normativa de cada país, incluida la información de TAE.</p>
+</section>
+
+</div></main>
+
+<script>
+const D = __DATA__;
+const PARAMS = __PARAMS__;
+
+/* ------------------------------------------------ formato */
+const nfx = d => { try { return new Intl.NumberFormat('es-ES',{minimumFractionDigits:d,maximumFractionDigits:d,useGrouping:'always'}); } catch(e){ return new Intl.NumberFormat('es-ES',{minimumFractionDigits:d,maximumFractionDigits:d}); } };
+const N0=nfx(0), N1=nfx(1), N2=nfx(2);
+const int = v => N0.format(Math.round(v));
+const eur = v => N0.format(Math.round(v)) + ' €';
+const eur2 = v => N2.format(v) + ' €';
+const sgn = v => (v>=0?'+':'−') + N0.format(Math.abs(Math.round(v))) + ' €';
+const pct1 = v => N1.format(v*100) + ' %';
+const MN = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const skl = sk => MN[(sk%100)-1] + ' ' + String(Math.floor(sk/100)).slice(2);
+const $ = (s, r=document) => r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const short = (s, n=16) => s.length > n ? s.slice(0, n-1) + '…' : s;
+
+/*CALC*/
+function scenario(b, e){
+  e = e || {};
+  const c=e.c||0, v=e.v||0, ep=e.e||0, s=e.s||0;
+  const spend=b.S*(1+s), clicks=spend/(b.cpc*(1+c)), leads=clicks*b.cvr*(1+v);
+  const epl=b.roas*b.cpc/b.cvr*(1+ep), rev=leads*epl;
+  return {spend,clicks,leads,epl,rev,profit:rev-spend,roas:spend?rev/spend:0,cpl:leads?spend/leads:0,cpc:b.cpc*(1+c),cvr:b.cvr*(1+v)};
+}
+function combine(list, level, damp){
+  const k = level==='lo'?0:level==='hi'?1:0.5;
+  const t={c:1,v:1,e:1,s:1};
+  for(const a of list) for(const key of ['c','v','e','s']){
+    const x=a.eff[key]; if(!x) continue;
+    const val = key==='c' ? x[1]+(x[0]-x[1])*k : x[0]+(x[1]-x[0])*k; /* el CPC mejora hacia el extremo más negativo */
+    t[key]*=1+damp*val;
+  }
+  return {c:t.c-1,v:t.v-1,e:t.e-1,s:t.s-1};
+}
+function actionImpact(b, a){
+  const lo=scenario(b,combine([a],'lo',1)).profit-scenario(b).profit;
+  const mid=scenario(b,combine([a],'mid',1)).profit-scenario(b).profit;
+  const hi=scenario(b,combine([a],'hi',1)).profit-scenario(b).profit;
+  return {lo,mid,hi};
+}
+function projection(b, list, months, ramp){
+  const base=scenario(b).profit, out={base:[],lo:[],mid:[],hi:[]};
+  const sc={lo:scenario(b,combine(list,'lo',PARAMS.damping)).profit,mid:scenario(b,combine(list,'mid',PARAMS.damping)).profit,hi:scenario(b,combine(list,'hi',PARAMS.damping)).profit};
+  for(let m=1;m<=months;m++){
+    const r=Math.min(1,m/ramp);
+    out.base.push(base);
+    for(const k of ['lo','mid','hi']) out[k].push(base+(sc[k]-base)*r);
+  }
+  return out;
+}
+function priority(a, imp, problems){
+  const hit=a.p.some(x=>problems.has(x));
+  return (imp.mid/a.effort)*(hit?1.5:1);
+}
+function claimsOf(lines, CL){
+  const n=lines.length, out={};
+  for(const k of Object.keys(CL)) out[k]=n?lines.filter(l=>CL[k].re.test(l)).length/n:0;
+  return out;
+}
+function capacity(clicks, isNow, isTarget, elast){
+  const f=isTarget/isNow, extra=clicks*(f-1);
+  return {clicks:clicks*f, extra, cpcUp:elast*(f-1)};
+}
+/*ENDCALC*/
+
+/* ------------------------------------------------ mercados y defaults (hipótesis editables) */
+const MKT = PARAMS.markets;
+const PROBLEMS = PARAMS.problems;
+/* Levers: c = CPC, v = click-to-lead conversion, e = EPL, s = spend volume. Ranges [low, high] are hypotheses (data/params.json). */
+const ACTIONS = PARAMS.actions;
+const CLAIMS = Object.fromEntries(Object.entries(PARAMS.claims).map(([k,v])=>[k,{re:new RegExp(v,'i')}]));
+const OWN_EX = PARAMS.example_ads.own;
+const COMP_EX = PARAMS.example_ads.competitor;
+
+/* ------------------------------------------------ estado */
+const WE = PARAMS.worked_example;
+const S = {name:'',mkt:'España',spend:WE.spend,roas:WE.roas,cpc:WE.cpc,cvr:WE.cvr*100,is:WE.impression_share,problems:new Set(['roas']),brand:null,inc:null,own:OWN_EX,comp:COMP_EX};
+
+const lastClosed = b => b.series.filter(r=>r[0]<=202603 && r[1]>0);
+function prefill(b){
+  const cl=lastClosed(b), last3=cl.slice(-3).filter(r=>r[2]!=null);
+  S.mkt=b.mkt; const m=MKT[b.mkt]||MKT['Otro mercado'];
+  S.spend=Math.round((cl.length?cl[cl.length-1][1]:20000)/100)*100||20000;
+  S.roas=last3.length?+(last3.reduce((s,r)=>s+r[2],0)/last3.length).toFixed(2):0.9;
+  S.cpc=m.cpc; S.cvr=m.cvr;
+  const ins=b.ins.filter(x=>x[2]!=null); S.is=ins.length?Math.round(ins[ins.length-1][2]):15;
+}
+function syncInputs(){
+  $('#f-mkt').value=S.mkt; $('#f-spend').value=S.spend; $('#f-roas').value=S.roas; $('#f-cpc').value=S.cpc; $('#f-cvr').value=S.cvr; $('#f-is').value=S.is;
+}
+const baseOf = () => ({S:S.spend,roas:S.roas,cpc:S.cpc,cvr:S.cvr/100});
+
+/* ------------------------------------------------ gráficos */
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const charts = {};
+const pal = () => [1,2,3,4,5,6,7,8].map(i=>css('--c'+i));
+function mk(id,cfg){
+  const el=document.getElementById(id); if(!el||typeof Chart==='undefined') return;
+  if(charts[id]) charts[id].destroy();
+  cfg.options=cfg.options||{}; cfg.options.responsive=true; cfg.options.maintainAspectRatio=false; cfg.options.animation=false;
+  charts[id]=new Chart(el,cfg);
+}
+function chartDefaults(){
+  if(typeof Chart==='undefined') return;
+  Chart.defaults.color=css('--text2'); Chart.defaults.borderColor=css('--grid');
+  Chart.defaults.font.family=css('--f-sans'); Chart.defaults.font.size=11;
+  Chart.defaults.plugins.legend.labels.boxWidth=10; Chart.defaults.plugins.legend.labels.boxHeight=10;
+}
+const gridY = () => ({grid:{color:css('--grid')},border:{display:false}});
+const gridX = () => ({grid:{display:false}});
+const rangeOf = (series, from) => series.filter(r=>r[0]>=from);
+
+/* ------------------------------------------------ render */
+function render(){
+  chartDefaults(); const P=pal();
+  const b=baseOf(), base=scenario(b);
+  const bd=S.brand;
+  const mktBrands=D.brands.filter(x=>x.mkt===S.mkt);
+  const company=S.name.trim()||'tu cuenta';
+  const cc=(MKT[S.mkt]||MKT['Otro mercado']).cc;
+
+  /* notas y enlaces */
+  $('#src-note').innerHTML = bd
+    ? `<b>Cuenta de la cartera de referencia.</b> Inversión, ROAS y cuota de impresiones son datos reales de esa cuenta (media de los 3 últimos meses cerrados). CPC y conversión son hipótesis de mercado, editables: ajusta el EPL implícito (${eur2(base.epl)}) si lo conoces.`
+    : `<b>Cifras introducidas por ti.</b> CPC y conversión de ${esc(S.mkt)} son valores por defecto de mercado (hipótesis). Los competidores mostrados son los que aparecen en la cartera de referencia de ese mercado.`;
+  const q=encodeURIComponent(S.name.trim()||'préstamos');
+  $('#links').innerHTML=
+    `<a href="https://adstransparency.google.com/?region=${cc}" target="_blank" rel="noopener">Transparencia de anuncios de Google ↗</a>`+
+    `<a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=${cc}&q=${q}&search_type=keyword_unordered" target="_blank" rel="noopener">Biblioteca de anuncios de Meta ↗</a>`+
+    `<a href="https://www.google.com/search?q=${q}" target="_blank" rel="noopener">Buscar «${esc(S.name.trim()||'préstamos')}» en Google ↗</a>`;
+  $('#probs').innerHTML=PROBLEMS.map(([k,l])=>`<button class="pill" data-p="${k}" aria-pressed="${S.problems.has(k)}">${l}</button>`).join('');
+
+  /* KPIs */
+  const be=base.cvr*base.epl; /* CPC de equilibrio */
+  $('#kpis').innerHTML=
+    `<div class="scard main"><div class="l">Beneficio mensual</div><div class="v ${base.profit>=0?'good':'bad'}">${sgn(base.profit)}</div><div class="s">revenue ${eur(base.rev)} − inversión ${eur(base.spend)}</div></div>`+
+    `<div class="scard"><div class="l">ROAS</div><div class="v ${S.roas>=1?'good':'bad'}">${int(S.roas*100)} %</div><div class="s">equilibrio en 100 %</div></div>`+
+    `<div class="scard"><div class="l">Clics al mes</div><div class="v">${int(base.clicks)}</div><div class="s">a ${eur2(S.cpc)} de CPC</div></div>`+
+    `<div class="scard"><div class="l">Leads al mes</div><div class="v">${int(base.leads)}</div><div class="s">conversión ${N1.format(S.cvr)} %</div></div>`+
+    `<div class="scard"><div class="l">CPL / EPL</div><div class="v">${eur2(base.cpl)} / ${eur2(base.epl)}</div><div class="s">margen por lead ${(base.epl-base.cpl>=0?'+':'−')+N2.format(Math.abs(base.epl-base.cpl))} €</div></div>`+
+    `<div class="scard"><div class="l">CPC de equilibrio</div><div class="v ${S.cpc<=be?'good':'bad'}">${eur2(be)}</div><div class="s">tu CPC: ${eur2(S.cpc)}</div></div>`;
+
+  /* alertas */
+  const al=[];
+  if(S.roas<1) al.push(['r',`<b>Pierdes dinero en media.</b> Con ROAS ${int(S.roas*100)} % pierdes ${eur(-base.profit)} al mes antes de otros costes. Para llegar al equilibrio necesitas bajar el CPC un ${pct1(1-S.roas)} o subir conversión o EPL un ${pct1(1/S.roas-1)}.`]);
+  else if(S.roas<1.15) al.push(['a',`<b>Margen estrecho.</b> ROAS ${int(S.roas*100)} %: cualquier subida de CPC o caída de conversión del ${pct1(S.roas-1)} te deja en pérdidas.`]);
+  else al.push(['g',`<b>Cuenta rentable en media.</b> ROAS ${int(S.roas*100)} % y beneficio de ${eur(base.profit)} al mes.`]);
+  if(S.cpc>be) al.push(['r',`<b>CPC por encima del equilibrio.</b> Pagas ${eur2(S.cpc)} y tu lead solo soporta ${eur2(be)} por clic con esta conversión.`]);
+  if(S.is<25) al.push([S.roas>=1?'g':'a',S.roas>=1?`<b>Hay volumen por capturar.</b> Solo ves el ${int(S.is)} % de las impresiones. Con ROAS por encima de 100 % tiene sentido ampliar.`:`<b>Cuota de impresiones baja (${int(S.is)} %).</b> Antes de ampliar, arregla la rentabilidad.`]);
+  if(S.is>=60) al.push(['a',`<b>Cuota de impresiones alta (${int(S.is)} %).</b> Queda poco crecimiento en las keywords actuales: el volumen nuevo vendrá de otras keywords o formatos.`]);
+  if(S.cvr<6) al.push(['a',`<b>Conversión baja (${N1.format(S.cvr)} %).</b> Es donde suele haber más margen de mejora: formulario, landing y señales.`]);
+  if(base.epl<base.cpl) al.push(['r',`<b>El EPL no cubre el CPL.</b> Cada lead te cuesta ${eur2(base.cpl)} y genera ${eur2(base.epl)}.`]);
+  if(S.problems.has('notraffic') && S.is<25) al.push(['a',`<b>Sin tráfico:</b> el techo no es la demanda sino tu cuota (${int(S.is)} %). Revisa pujas, presupuesto, match types y rechazos de anuncios.`]);
+  if(S.problems.has('expensive') && S.cpc>be*0.8) al.push(['a',`<b>Tráfico caro:</b> tu CPC ocupa el ${int(S.cpc/be*100)} % del máximo rentable. Mira el plan: anuncios, horarios y negativas por valor.`]);
+  $('#alerts').innerHTML=al.map(a=>`<div class="alert ${a[0]}">${a[1]}</div>`).join('');
+
+  /* embudo */
+  mk('chFun',{type:'bar',data:{labels:['Inversión','Revenue','Beneficio'],datasets:[{data:[base.spend,base.rev,base.profit],backgroundColor:[P[7]+'aa',P[0],base.profit>=0?P[1]:P[6]],borderRadius:3}]},
+    options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>eur(c.parsed.y)}}},scales:{x:gridX(),y:{...gridY(),ticks:{callback:v=>int(v/1000)+' k'}}}}});
+  /* heatmap */
+  const cpcs=[.6,.8,1,1.2,1.5].map(f=>S.cpc*f), cvrs=[.6,.8,1,1.25,1.5].map(f=>b.cvr*f);
+  let h='<table class="heat"><thead><tr><th>CVR \\ CPC</th>'+cpcs.map((c,i)=>`<th>${eur2(c)}</th>`).join('')+'</tr></thead><tbody>';
+  cvrs.forEach((v,j)=>{ h+=`<tr><th>${N1.format(v*100)} %</th>`; cpcs.forEach((c,i)=>{ const r=v*base.epl/c; const g=r>=1; const a=Math.min(.75,Math.abs(r-1)*.9+.1);
+    h+=`<td style="background:${g?`rgba(46,204,138,${a})`:`rgba(247,89,89,${a})`};color:var(--text);${i===2&&j===2?'outline:2px solid var(--accent);outline-offset:-2px;':''}">${int(r*100)} %</td>`; }); h+='</tr>'; });
+  $('#heat').innerHTML=h+'</tbody></table>';
+
+  /* histórico */
+  const fromSk=bd?0:202501;
+  const ser = bd ? bd.series : null;
+  $('#h-hist').textContent = bd ? `Datos reales de ${bd.name}. Abril de 2026 está incompleto.` : 'Sin cuenta de referencia seleccionada: se muestra la cartera completa (suma de inversión y ROAS ponderado por inversión).';
+  let hs;
+  if(bd) hs=ser.map(r=>({sk:r[0],sp:r[1],r:r[2]}));
+  else { const m={}; D.brands.forEach(x=>x.series.forEach(r=>{ if(r[2]==null) return; const o=m[r[0]]||(m[r[0]]={sp:0,rv:0}); o.sp+=r[1]; o.rv+=r[1]*r[2]; })); hs=Object.keys(m).sort().map(k=>({sk:+k,sp:m[k].sp,r:m[k].sp?m[k].rv/m[k].sp:null})); }
+  hs=hs.filter(x=>x.sk>=202401);
+  mk('chHist',{type:'bar',data:{labels:hs.map(x=>skl(x.sk)),datasets:[
+    {type:'line',label:'ROAS',data:hs.map(x=>x.r==null?null:x.r*100),borderColor:P[2],backgroundColor:P[2],yAxisID:'y1',pointRadius:2,tension:.2,spanGaps:true},
+    {type:'line',label:'Equilibrio 100 %',data:hs.map(()=>100),borderColor:P[7],borderDash:[5,4],pointRadius:0,yAxisID:'y1'},
+    {type:'bar',label:'Inversión',data:hs.map(x=>x.sp),backgroundColor:P[0]+'88',borderRadius:2,yAxisID:'y'}]},
+    options:{plugins:{tooltip:{callbacks:{label:c=>c.dataset.label==='Inversión'?'Inversión: '+eur(c.parsed.y):c.dataset.label+': '+int(c.parsed.y)+(c.dataset.label==='ROAS'?' %':'')}}},scales:{x:{...gridX(),ticks:{maxRotation:60,minRotation:45,autoSkip:true,maxTicksLimit:14}},y:{...gridY(),ticks:{callback:v=>int(v/1000)+' k'}},y1:{position:'right',grid:{display:false},ticks:{callback:v=>v+' %'},beginAtZero:true}}}});
+  const rr=hs.filter(x=>x.r!=null&&x.sp>0); const best=rr.slice().sort((a,c)=>c.r-a.r)[0], worst=rr.slice().sort((a,c)=>a.r-c.r)[0];
+  const above=rr.filter(x=>x.r>=1).length;
+  $('#in-hist').textContent = rr.length?`${above} de ${rr.length} meses por encima de 100 %. Mejor mes: ${skl(best.sk)} (${int(best.r*100)} %). Peor: ${skl(worst.sk)} (${int(worst.r*100)} %).`:'';
+
+  /* campañas */
+  const camps=bd?bd.camps.filter(c=>c.rl!=null):[];
+  $('#chCamp').parentElement.style.height=Math.max(260,camps.length*34+60)+'px';
+  mk('chCamp',{type:'bar',data:{labels:camps.map(c=>short(c.n,26)),datasets:[{label:'Semana anterior',data:camps.map(c=>(c.rp||0)*100),backgroundColor:P[7]+'99',borderRadius:2},{label:'Última semana',data:camps.map(c=>(c.rl||0)*100),backgroundColor:P[0],borderRadius:2}]},
+    options:{indexAxis:'y',plugins:{tooltip:{callbacks:{title:i=>camps[i[0].dataIndex].n,label:c=>c.dataset.label+': '+int(c.parsed.x)+' %'}}},scales:{x:{...gridY(),ticks:{callback:v=>v+' %'}},y:{...gridX(),ticks:{autoSkip:false}}}}});
+  const win=camps.filter(c=>c.rl>=1), lose=camps.filter(c=>c.rl>0&&c.rl<.6);
+  $('#in-camp').textContent = bd&&camps.length ? `${win.length} campañas por encima de 100 % y ${lose.length} por debajo de 60 %. Mueve presupuesto de las segundas a las primeras sin recortar a ciegas.` : (bd?'Esta cuenta no tiene desglose por campaña en los datos de referencia.':'Selecciona una cuenta de referencia para ver sus campañas.');
+
+  /* benchmark */
+  const bench=D.brands.map(x=>{ const r=lastClosed(x).slice(-3).filter(y=>y[2]!=null); return {n:x.name,r:r.length?r.reduce((s,y)=>s+y[2],0)/r.length:null,sp:r.length?r.reduce((s,y)=>s+y[1],0)/r.length:0}; }).filter(x=>x.r!=null);
+  bench.push({n:(S.name.trim()||'Tu cuenta')+(bd?' (seleccionada)':' (tú)'),r:S.roas,me:true});
+  bench.sort((a,c)=>c.r-a.r);
+  mk('chBench',{type:'bar',data:{labels:bench.map(x=>short(x.n,22)),datasets:[{data:bench.map(x=>x.r*100),backgroundColor:bench.map(x=>x.me?P[2]:P[0]),borderRadius:3}]},
+    options:{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>int(c.parsed.x)+' %'}}},scales:{x:{...gridY(),ticks:{callback:v=>v+' %'},beginAtZero:true},y:{...gridX(),ticks:{autoSkip:false}}}}});
+  /* mezcla */
+  const mixM=[...new Set(D.brands.flatMap(x=>x.series.map(r=>r[0])))].filter(k=>k>=202501).sort();
+  mk('chMix',{type:'bar',data:{labels:mixM.map(skl),datasets:D.brands.map((x,i)=>({label:x.name,data:mixM.map(k=>{const r=x.series.find(y=>y[0]===k); return r?r[1]:0;}),backgroundColor:P[i%8],stack:'s'}))},
+    options:{plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+eur(c.parsed.y)}}},scales:{x:{...gridX(),stacked:true,ticks:{maxRotation:60,minRotation:45}},y:{...gridY(),stacked:true,ticks:{callback:v=>int(v/1000)+' k'}}}}});
+
+  /* competidores */
+  const pool = bd ? [bd] : mktBrands;
+  const cm={}; pool.forEach(x=>Object.entries(x.comps).forEach(([k,v])=>cm[k]=(cm[k]||0)+v));
+  const cl=Object.entries(cm).sort((a,c)=>c[1]-a[1]).slice(0,12);
+  const nIns=pool.reduce((s,x)=>s+x.ins.length,0);
+  $('#h-comp').textContent = bd ? `Veces que cada competidor aparece citado en los auction insights semanales de ${bd.name}.` : `Competidores citados en los auction insights de la cartera de referencia en ${S.mkt}.`;
+  $('#chComp').parentElement.style.height=Math.max(260,cl.length*26+60)+'px';
+  mk('chComp',{type:'bar',data:{labels:cl.map(x=>x[0]),datasets:[{data:cl.map(x=>x[1]),backgroundColor:P[0],borderRadius:3}]},
+    options:{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x+' citas'}}},scales:{x:{...gridY(),ticks:{precision:0}},y:{...gridX(),ticks:{autoSkip:false}}}}});
+  $('#in-comp').textContent = cl.length ? `${cl[0][0]} es el más citado (${cl[0][1]} veces)${cl[1]?`, seguido de ${cl[1][0]} (${cl[1][1]})`:''}. Estúdialos primero en la Transparencia de anuncios de Google.` : 'Esta cuenta no tiene auction insights en los datos de referencia.';
+  /* IS y presión */
+  const insAll=(bd?[bd]:mktBrands.length?mktBrands:D.brands).flatMap(x=>x.ins);
+  const byM={}; insAll.forEach(r=>{ const o=byM[r[0]]||(byM[r[0]]={is:[],pl:[],nc:[],sh:[]}); if(r[2]!=null)o.is.push(r[2]); if(r[3]!=null)o.pl.push(r[3]); if(r[1]!=null)o.nc.push(r[1]); if(r[4]!=null)o.sh.push(r[4]); });
+  const mk2=Object.keys(byM).map(Number).sort().filter(k=>k>=202401);
+  const avg=a=>a.length?a.reduce((s,v)=>s+v,0)/a.length:null;
+  mk('chIS',{type:'line',data:{labels:mk2.map(skl),datasets:[{label:'Cuota de impresiones (%)',data:mk2.map(k=>avg(byM[k].is)),borderColor:P[0],backgroundColor:P[0],yAxisID:'y',pointRadius:2,spanGaps:true,tension:.2},{label:'Posición (menor es mejor)',data:mk2.map(k=>avg(byM[k].pl)),borderColor:P[2],backgroundColor:P[2],yAxisID:'y1',pointRadius:2,spanGaps:true,tension:.2}]},
+    options:{plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+N1.format(c.parsed.y)}}},scales:{x:{...gridX(),ticks:{maxRotation:60,minRotation:45,maxTicksLimit:14}},y:{...gridY(),beginAtZero:true},y1:{position:'right',reverse:true,grid:{display:false}}}}});
+  mk('chPress',{type:'bar',data:{labels:mk2.map(skl),datasets:[{type:'line',label:'Cuota del líder (%)',data:mk2.map(k=>avg(byM[k].sh)),borderColor:P[5],backgroundColor:P[5],yAxisID:'y1',pointRadius:2,spanGaps:true,tension:.2},{type:'bar',label:'Nº de competidores',data:mk2.map(k=>avg(byM[k].nc)),backgroundColor:P[3]+'88',borderRadius:2,yAxisID:'y'}]},
+    options:{plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+N1.format(c.parsed.y)}}},scales:{x:{...gridX(),ticks:{maxRotation:60,minRotation:45,maxTicksLimit:14}},y:{...gridY(),beginAtZero:true},y1:{position:'right',grid:{display:false},beginAtZero:true}}}});
+  /* capacidad */
+  const targets=[S.is,25,35,45,60].filter((v,i,a)=>v>=S.is&&a.indexOf(v)===i).sort((a,c)=>a-c);
+  const capRows=targets.map(t=>({t,...capacity(base.clicks,S.is,t,PARAMS.capacity_cpc_elasticity)}));
+  mk('chCap',{type:'bar',data:{labels:capRows.map(r=>r.t+' %'),datasets:[{type:'bar',label:'Clics al mes',data:capRows.map(r=>r.clicks),backgroundColor:capRows.map((r,i)=>i===0?P[7]+'99':P[0]),borderRadius:3,yAxisID:'y'},{type:'line',label:'Revenue si el ROAS se mantiene',data:capRows.map(r=>S.spend*(r.clicks/base.clicks)*(1+r.cpcUp)*S.roas/(1+r.cpcUp)),borderColor:P[1],backgroundColor:P[1],yAxisID:'y1',pointRadius:3}]},
+    options:{plugins:{tooltip:{callbacks:{title:i=>'Cuota objetivo '+i[0].label,label:c=>c.dataset.label+': '+int(c.parsed.y)+(c.dataset.label.startsWith('Revenue')?' €':'')}}},scales:{x:{...gridX(),title:{display:true,text:'Cuota de impresiones objetivo'}},y:{...gridY(),ticks:{callback:v=>int(v/1000)+' k'}},y1:{position:'right',grid:{display:false},ticks:{callback:v=>int(v/1000)+' k €'}}}}});
+  const c45=capacity(base.clicks,S.is,Math.max(S.is,45),PARAMS.capacity_cpc_elasticity);
+  $('#in-cap').textContent = S.is>=45 ? 'Con tu cuota actual queda poco volumen por capturar en las keywords que ya tienes.' : `Pasar del ${int(S.is)} % al 45 % supondría unos ${int(c45.extra)} clics más al mes y un CPC cerca de un ${pct1(c45.cpcUp)} más alto. Solo compensa si el ROAS marginal sigue por encima de 100 %.`;
+
+  /* anuncios */
+  const own=S.own.split('\n').map(x=>x.trim()).filter(Boolean), cmp=S.comp.split('\n').map(x=>x.trim()).filter(Boolean);
+  const co=claimsOf(own,CLAIMS), cc2=claimsOf(cmp,CLAIMS), keys=Object.keys(CLAIMS);
+  mk('chAds',{type:'bar',data:{labels:keys,datasets:[{label:'Tus anuncios',data:keys.map(k=>co[k]*100),backgroundColor:P[0],borderRadius:2},{label:'Competidores',data:keys.map(k=>cc2[k]*100),backgroundColor:P[2],borderRadius:2}]},
+    options:{indexAxis:'y',plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+int(c.parsed.x)+' % de las líneas'}}},scales:{x:{...gridY(),max:100,ticks:{callback:v=>v+' %'}},y:{...gridX(),ticks:{autoSkip:false}}}}});
+  const miss=keys.filter(k=>cc2[k]>0&&co[k]===0), uniq=keys.filter(k=>co[k]>0&&cc2[k]===0), shared=keys.filter(k=>co[k]>0&&cc2[k]>0);
+  const long=own.filter(l=>l.length>90).length, longH=own.filter(l=>l.length>30&&l.length<=90).length;
+  $('#gaps').innerHTML =
+    (miss.length?`<div class="alert r"><b>Te faltan:</b> ${miss.join(', ')}. Los usan los competidores y tus anuncios no.</div>`:'<div class="alert g">No te falta ningún mensaje que use la competencia.</div>')+
+    (uniq.length?`<div class="alert g"><b>Te diferencian:</b> ${uniq.join(', ')}. Solo aparecen en tus anuncios.</div>`:'')+
+    (shared.length?`<div class="alert a"><b>Compartidos:</b> ${shared.join(', ')}. Aquí compites en igualdad: gana la oferta concreta.</div>`:'')+
+    (long?`<div class="alert r"><b>${long} líneas pasan de 90 caracteres</b> y no caben como descripción.</div>`:'');
+  $('#kv-ads').innerHTML=`<span>Tus líneas <b>${own.length}</b></span><span>Competidores <b>${cmp.length}</b></span><span>Cobertura propia <b>${int(keys.filter(k=>co[k]>0).length/keys.length*100)} %</b></span><span>Cobertura competencia <b>${int(keys.filter(k=>cc2[k]>0).length/keys.length*100)} %</b></span><span>Líneas que no caben como titular (más de 30) <b>${own.filter(l=>l.length>30).length}</b></span>`;
+
+  /* plan */
+  const imps=ACTIONS.map(a=>({a,imp:actionImpact(b,a)}));
+  if(!S.inc){ const ranked=imps.slice().sort((x,y)=>priority(y.a,y.imp,S.problems)-priority(x.a,x.imp,S.problems)); S.inc=new Set(ranked.slice(0,5).map(x=>x.a.id)); S.incAuto=true; }
+  const ranked=imps.slice().sort((x,y)=>priority(y.a,y.imp,S.problems)-priority(x.a,x.imp,S.problems));
+  let t='<thead><tr><th class="tl">Incluir</th><th class="tl">Acción</th><th>Esfuerzo</th><th>Bajo</th><th>Medio</th><th>Alto</th><th>ROAS medio</th></tr></thead><tbody>';
+  ranked.forEach(({a,imp})=>{
+    const hit=a.p.some(x=>S.problems.has(x));
+    const roasMid=scenario(b,combine([a],'mid',1)).roas;
+    t+=`<tr><td class="tl"><input type="checkbox" class="chk" data-inc="${a.id}" ${S.inc.has(a.id)?'checked':''} aria-label="Incluir ${esc(a.t)}"></td>
+      <td class="tl name">${esc(a.t)}${hit?'<span class="tag g">atiende tu problema</span>':''}<span class="sub">${esc(a.why)}</span></td>
+      <td>${'●'.repeat(a.effort)}${'○'.repeat(3-a.effort)}</td><td class="${imp.lo>=0?'good':'bad'}">${sgn(imp.lo)}</td><td class="${imp.mid>=0?'good':'bad'}">${sgn(imp.mid)}</td><td class="${imp.hi>=0?'good':'bad'}">${sgn(imp.hi)}</td><td>${int(roasMid*100)} %</td></tr>`;
+  });
+  $('#plan-table').innerHTML=t+'</tbody>';
+  $('#impbox').style.height=Math.max(300,ranked.length*24+60)+'px';
+  mk('chImp',{type:'bar',data:{labels:ranked.map(x=>short(x.a.t,34)),datasets:[{label:'Rango',data:ranked.map(x=>[x.imp.lo,x.imp.hi]),backgroundColor:P[0]+'66',borderColor:P[0],borderWidth:1,borderSkipped:false,borderRadius:3},{type:'scatter',label:'Medio',data:ranked.map((x,i)=>({x:x.imp.mid,y:i})),backgroundColor:P[2],pointRadius:4}]},
+    options:{indexAxis:'y',plugins:{tooltip:{callbacks:{title:i=>ranked[i[0].dataIndex]?ranked[i[0].dataIndex].a.t:'',label:c=>c.dataset.label==='Rango'?'Entre '+sgn(c.raw[0])+' y '+sgn(c.raw[1]):'Medio '+sgn(c.raw.x)}}},scales:{x:{...gridY(),ticks:{callback:v=>int(v/1000)+' k'}},y:{...gridX(),ticks:{autoSkip:false}}}}});
+  const tor=[['CPC −20 %',{c:-.2}],['CPC +20 %',{c:.2}],['Conversión +20 %',{v:.2}],['Conversión −20 %',{v:-.2}],['EPL +20 %',{e:.2}],['EPL −20 %',{e:-.2}],['Volumen +20 %',{s:.2}],['Volumen −20 %',{s:-.2}]].map(([l,e])=>[l,scenario(b,e).profit-base.profit]).sort((x,y)=>y[1]-x[1]);
+  mk('chTor',{type:'bar',data:{labels:tor.map(x=>x[0]),datasets:[{data:tor.map(x=>x[1]),backgroundColor:tor.map(x=>x[1]>=0?P[1]:P[6]),borderRadius:3}]},
+    options:{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>sgn(c.parsed.x)+' al mes'}}},scales:{x:{...gridY(),ticks:{callback:v=>int(v/1000)+' k'}},y:gridX()}}});
+
+  /* proyección */
+  const chosen=ACTIONS.filter(a=>S.inc.has(a.id));
+  const pj=projection(b,chosen,PARAMS.projection.months,PARAMS.projection.ramp_months);
+  const lbl=['Hoy','M1','M2','M3','M4','M5','M6'];
+  const withNow=a=>[base.profit,...a];
+  mk('chProj',{type:'line',data:{labels:lbl,datasets:[
+    {label:'Sin cambios',data:withNow(pj.base),borderColor:P[7],borderDash:[5,4],pointRadius:2},
+    {label:'Plan · bajo',data:withNow(pj.lo),borderColor:P[2],pointRadius:2,tension:.2},
+    {label:'Plan · medio',data:withNow(pj.mid),borderColor:P[0],backgroundColor:P[0],pointRadius:3,tension:.2},
+    {label:'Plan · alto',data:withNow(pj.hi),borderColor:P[1],pointRadius:2,tension:.2}]},
+    options:{plugins:{title:{display:true,text:'Beneficio mensual (€)',color:css('--text2'),font:{weight:'500',size:12}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+sgn(c.parsed.y)}}},scales:{x:gridX(),y:{...gridY(),ticks:{callback:v=>int(v/1000)+' k'}}}}});
+  /* cascada */
+  const wf=[]; let run=base.profit; const done=[];
+  const full=scenario(b,combine(chosen,'mid',PARAMS.damping)).profit;
+  const sumIso=chosen.reduce((s,a)=>s+actionImpact(b,a).mid,0);
+  chosen.forEach(a=>{ const m=actionImpact(b,a).mid*(sumIso?(full-base.profit)/sumIso:0); wf.push([short(a.t,30),run,run+m]); run+=m; });
+  mk('chWf',{type:'bar',data:{labels:['Hoy',...wf.map(x=>x[0]),'Con plan'],datasets:[{data:[[0,base.profit],...wf.map(x=>[x[1],x[2]]),[0,full]],backgroundColor:[P[7],...wf.map(x=>x[2]>=x[1]?P[1]:P[6]),P[0]],borderRadius:3}]},
+    options:{plugins:{legend:{display:false},title:{display:true,text:'Del beneficio de hoy al del plan (escenario medio)',color:css('--text2'),font:{weight:'500',size:12}},tooltip:{callbacks:{label:c=>sgn(c.raw[1]-c.raw[0])}}},scales:{x:{...gridX(),ticks:{maxRotation:60,minRotation:45,autoSkip:false}},y:{...gridY(),ticks:{callback:v=>int(v/1000)+' k'}}}}});
+  const sixLo=pj.lo.reduce((s,v,i)=>s+v-pj.base[i],0), sixMid=pj.mid.reduce((s,v,i)=>s+v-pj.base[i],0), sixHi=pj.hi.reduce((s,v,i)=>s+v-pj.base[i],0);
+  const fullHi=scenario(b,combine(chosen,'hi',PARAMS.damping)), fullLo=scenario(b,combine(chosen,'lo',PARAMS.damping)), fullMid=scenario(b,combine(chosen,'mid',PARAMS.damping));
+  $('#kv-proj').innerHTML=`<span>Acciones incluidas <b>${chosen.length}</b></span><span>ROAS con plan <b>${int(fullLo.roas*100)} % – ${int(fullHi.roas*100)} %</b> (medio ${int(fullMid.roas*100)} %)</span><span>Beneficio extra en 6 meses <b>${sgn(sixLo)} a ${sgn(sixHi)}</b> (medio ${sgn(sixMid)})</span><span>Régimen estable <b>${sgn(fullMid.profit-base.profit)}</b> al mes</span>`;
+
+  /* cadencia */
+  $('#cad').innerHTML=[
+    ['Diario','Mirar Google Ads para entender demanda y campaña. Mirar el backend para ver aprobación por partner y fuente. Calcular el ROAS y predecir el de los usuarios comprados ayer.'],
+    ['Semanal','Llamada con todo el equipo. Comparar semana contra semana, decidir acciones de presupuesto y ROAS, y hacer los cambios solo en esa reunión.'],
+    ['Registro de cambios','Anotar cada cambio con fecha. La semana siguiente rellenar «cómo afectó» para detectar patrones.'],
+    ['Competidores','Incluir en la revisión semanal los cambios en los anuncios de la competencia y las cuotas de la subasta.']
+  ].map(([h,p])=>`<div class="pcard"><h4>${h}</h4><p>${p}</p></div>`).join('');
+}
+
+/* ------------------------------------------------ eventos */
+function init(){
+  $('#f-acct').innerHTML='<option value="">Ninguna: introduzco mis cifras</option>'+D.brands.map((b,i)=>`<option value="${i}">${esc(b.name)} · ${esc(b.mkt)}</option>`).join('');
+  $('#f-mkt').innerHTML=Object.keys(MKT).map(k=>`<option>${k}</option>`).join('');
+  syncInputs();
+  $('#t-own').value=S.own; $('#t-comp').value=S.comp;
+  const rerun=()=>{ S.inc=null; render(); };
+  $('#f-name').addEventListener('input',e=>{ S.name=e.target.value; render(); });
+  $('#f-acct').addEventListener('change',e=>{ const b=e.target.value===''?null:D.brands[+e.target.value]; S.brand=b; if(b){ prefill(b); syncInputs(); } S.inc=null; render(); });
+  $('#f-mkt').addEventListener('change',e=>{ S.mkt=e.target.value; const m=MKT[S.mkt]; S.cpc=m.cpc; S.cvr=m.cvr; syncInputs(); if(S.brand&&S.brand.mkt!==S.mkt){ S.brand=null; $('#f-acct').value=''; } render(); });
+  [['f-spend','spend'],['f-roas','roas'],['f-cpc','cpc'],['f-cvr','cvr'],['f-is','is']].forEach(([id,k])=>{
+    $('#'+id).addEventListener('input',e=>{ const v=parseFloat(e.target.value); if(v>0){ S[k]=v; render(); } });
+  });
+  $('#probs').addEventListener('click',e=>{ const b=e.target.closest('[data-p]'); if(!b) return; const k=b.dataset.p; S.problems.has(k)?S.problems.delete(k):S.problems.add(k); S.inc=null; render(); });
+  $('#plan-table').addEventListener('change',e=>{ const c=e.target.closest('[data-inc]'); if(!c) return; c.checked?S.inc.add(c.dataset.inc):S.inc.delete(c.dataset.inc); render(); });
+  $('#t-own').addEventListener('input',e=>{ S.own=e.target.value; render(); });
+  $('#t-comp').addEventListener('input',e=>{ S.comp=e.target.value; render(); });
+  if(window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>render());
+  new MutationObserver(()=>render()).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  render();
+}
+init();
+</script>

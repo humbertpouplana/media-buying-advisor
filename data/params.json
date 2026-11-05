@@ -1,0 +1,412 @@
+{
+ "model_version": "0.2.0",
+ "damping": 0.7,
+ "projection": {
+  "months": 6,
+  "ramp_months": 3
+ },
+ "capacity_cpc_elasticity": 0.3,
+ "worked_example": {
+  "spend": 20000,
+  "roas": 0.9,
+  "cpc": 0.95,
+  "cvr": 0.09,
+  "impression_share": 15
+ },
+ "plan_ids": [
+  "cpl",
+  "excl",
+  "lowq",
+  "neg",
+  "lp"
+ ],
+ "tornado_shock": 0.2,
+ "capacity_targets": [
+  15,
+  25,
+  35,
+  45,
+  60
+ ],
+ "markets": {
+  "España": {
+   "cc": "ES",
+   "cpc": 0.95,
+   "cvr": 9
+  },
+  "México": {
+   "cc": "MX",
+   "cpc": 0.45,
+   "cvr": 10
+  },
+  "Polonia": {
+   "cc": "PL",
+   "cpc": 0.6,
+   "cvr": 8
+  },
+  "Rumanía": {
+   "cc": "RO",
+   "cpc": 0.4,
+   "cvr": 8
+  },
+  "Alemania": {
+   "cc": "DE",
+   "cpc": 1.1,
+   "cvr": 7
+  },
+  "Colombia": {
+   "cc": "CO",
+   "cpc": 0.35,
+   "cvr": 10
+  },
+  "Otro mercado": {
+   "cc": "ES",
+   "cpc": 0.8,
+   "cvr": 8
+  }
+ },
+ "problems": [
+  [
+   "notraffic",
+   "No tenemos tráfico"
+  ],
+  [
+   "expensive",
+   "El tráfico es muy caro"
+  ],
+  [
+   "lowconv",
+   "Convierte poco la web"
+  ],
+  [
+   "quality",
+   "Los leads son de baja calidad"
+  ],
+  [
+   "roas",
+   "El ROAS cae o no es rentable"
+  ],
+  [
+   "competition",
+   "Mucha competencia"
+  ],
+  [
+   "budget",
+   "Presupuesto limitado"
+  ]
+ ],
+ "actions": [
+  {
+   "id": "cpl",
+   "t": "Enviar señal CPL con valor parecido al EPL en la primera llamada",
+   "why": "Más señales para Smart Bidding: no se entrena solo con las pocas ventas finales.",
+   "eff": {
+    "v": [
+     0.05,
+     0.15
+    ],
+    "s": [
+     0.08,
+     0.2
+    ]
+   },
+   "effort": 2,
+   "p": [
+    "notraffic",
+    "lowconv",
+    "roas"
+   ]
+  },
+  {
+   "id": "excl",
+   "t": "Excluir por API a todos los usuarios que ya están en tu base de datos",
+   "why": "Comprar solo usuarios nuevos; los recurrentes se reactivan con email y SMS.",
+   "eff": {
+    "e": [
+     0.05,
+     0.12
+    ],
+    "c": [
+     -0.03,
+     0
+    ]
+   },
+   "effort": 2,
+   "p": [
+    "roas",
+    "quality",
+    "expensive"
+   ]
+  },
+  {
+   "id": "lowq",
+   "t": "Separar las keywords de baja calidad (por ejemplo ASNEF) con campaña y landing propias",
+   "why": "Clientes y demanda distintos; evita contaminar las campañas principales.",
+   "eff": {
+    "e": [
+     0.04,
+     0.1
+    ],
+    "c": [
+     -0.08,
+     -0.03
+    ]
+   },
+   "effort": 2,
+   "p": [
+    "quality",
+    "roas",
+    "expensive"
+   ]
+  },
+  {
+   "id": "neg",
+   "t": "Negativizar keywords por valor de conversión por partner, no desde el día 1",
+   "why": "Si una keyword convierte más a brokers que a lenders, es mala señal.",
+   "eff": {
+    "c": [
+     -0.12,
+     -0.05
+    ],
+    "e": [
+     0.03,
+     0.08
+    ]
+   },
+   "effort": 2,
+   "p": [
+    "expensive",
+    "quality",
+    "roas"
+   ]
+  },
+  {
+   "id": "match",
+   "t": "Probar phrase y broad con tCPA y unos 500 € al día para campañas nuevas",
+   "why": "La demanda se explora con match types y nunca recortando presupuesto por mal arranque.",
+   "eff": {
+    "s": [
+     0.2,
+     0.6
+    ],
+    "c": [
+     0.03,
+     0.08
+    ]
+   },
+   "effort": 2,
+   "p": [
+    "notraffic",
+    "budget"
+   ]
+  },
+  {
+   "id": "brand",
+   "t": "Campañas de marca y de competidores con presupuesto sin límite",
+   "why": "Gastan solo lo que la demanda permite y capturan el tráfico más barato.",
+   "eff": {
+    "s": [
+     0.05,
+     0.15
+    ],
+    "c": [
+     -0.06,
+     -0.02
+    ]
+   },
+   "effort": 1,
+   "p": [
+    "notraffic",
+    "competition",
+    "expensive"
+   ]
+  },
+  {
+   "id": "lp",
+   "t": "Landing page y pingtree propios por campaña",
+   "why": "Mensaje alineado con la keyword y orden de partners adaptado a cada pool de usuarios.",
+   "eff": {
+    "v": [
+     0.08,
+     0.2
+    ],
+    "e": [
+     0.03,
+     0.08
+    ]
+   },
+   "effort": 3,
+   "p": [
+    "lowconv",
+    "roas",
+    "quality"
+   ]
+  },
+  {
+   "id": "form",
+   "t": "Acortar el formulario y medir eventos por paso",
+   "why": "Menos pasos suele significar mejores usuarios; los eventos revelan dónde se caen.",
+   "eff": {
+    "v": [
+     0.05,
+     0.15
+    ]
+   },
+   "effort": 2,
+   "p": [
+    "lowconv"
+   ]
+  },
+  {
+   "id": "ads",
+   "t": "Reescribir los anuncios con los mensajes que usan los competidores y tú no",
+   "why": "Mejora CTR y Nivel de calidad, lo que baja el CPC por el ranking.",
+   "eff": {
+    "c": [
+     -0.15,
+     -0.06
+    ],
+    "v": [
+     0.02,
+     0.06
+    ]
+   },
+   "effort": 1,
+   "p": [
+    "expensive",
+    "competition"
+   ]
+  },
+  {
+   "id": "pmax",
+   "t": "Destinar un 20 % a PMax y Demand Gen con creatividades probadas en Meta",
+   "why": "Amplía volumen cuando la búsqueda se agota; en México Demand Gen puede llegar al 40 %.",
+   "eff": {
+    "s": [
+     0.1,
+     0.3
+    ],
+    "c": [
+     -0.05,
+     0.05
+    ]
+   },
+   "effort": 3,
+   "p": [
+    "notraffic",
+    "budget",
+    "competition"
+   ]
+  },
+  {
+   "id": "ping",
+   "t": "Reordenar el pingtree por EPL y sumar partners",
+   "why": "Sube el valor por lead sin tocar la cuenta de anuncios. Ver Pingtree Forecast.",
+   "eff": {
+    "e": [
+     0.05,
+     0.15
+    ]
+   },
+   "effort": 2,
+   "p": [
+    "roas",
+    "quality",
+    "budget"
+   ]
+  },
+  {
+   "id": "sched",
+   "t": "Ajustar horarios, dispositivos y geografías con peor retorno",
+   "why": "Quita gasto en franjas donde el lead no se monetiza.",
+   "eff": {
+    "c": [
+     -0.1,
+     -0.04
+    ]
+   },
+   "effort": 1,
+   "p": [
+    "expensive",
+    "roas"
+   ]
+  },
+  {
+   "id": "crm",
+   "t": "Sustituir el remarketing de Google por un flujo de email y SMS",
+   "why": "Menor coste, mejor intención y más LTV en segunda y tercera conversión. Ver Remarketing.",
+   "eff": {
+    "e": [
+     0.04,
+     0.1
+    ],
+    "s": [
+     0,
+     0.05
+    ]
+   },
+   "effort": 2,
+   "p": [
+    "roas",
+    "budget"
+   ]
+  },
+  {
+   "id": "track",
+   "t": "Auditar el tracking server-side por gclid y el envío de valores a Google",
+   "why": "Una señal mal enviada entrena al algoritmo con datos erróneos.",
+   "eff": {
+    "v": [
+     0.05,
+     0.2
+    ],
+    "e": [
+     0.02,
+     0.06
+    ]
+   },
+   "effort": 2,
+   "p": [
+    "lowconv",
+    "roas",
+    "quality"
+   ]
+  },
+  {
+   "id": "cadence",
+   "t": "Revisión diaria, optimización semanal y registro de cada cambio",
+   "why": "Permite aprender qué cambio movió qué métrica.",
+   "eff": {
+    "c": [
+     -0.05,
+     -0.02
+    ],
+    "v": [
+     0.02,
+     0.05
+    ]
+   },
+   "effort": 1,
+   "p": [
+    "roas",
+    "expensive",
+    "lowconv"
+   ]
+  }
+ ],
+ "claims": {
+  "Velocidad": "minuto|rápid|inmediat|hoy|24 ?h|al instante|mismo día",
+  "Importe": "\\d[\\d.]*\\s?(€|eur|euros|\\$|zł|ron|mxn)|hasta\\s+\\d",
+  "Sin comisiones": "sin (comision|gastos|coste|cuota)|gratis|\\b0 ?%|sin cargo",
+  "100 % online": "online|sin papeleo|sin papeles|desde (casa|el móvil)|sin salir",
+  "Confianza": "regulad|segur|confianza|opinion|años|miles de|garant|licencia",
+  "Flexibilidad": "asnef|rai|sin nómina|sin aval|cualquier situación|con deudas|sin avalista",
+  "Tasa / TAE": "tae|tin|interés|intereses|tipo fijo",
+  "Llamada a la acción": "solicita|pide|consigue|calcula|simula|empieza|compara|descubre|obtén|obten",
+  "Urgencia": "ahora|ya\\b|solo hoy|última|hoy mismo|sin esperas|sin esperar"
+ },
+ "example_ads": {
+  "own": "Préstamos online hasta 3.000 €\nSolicita en 5 minutos\nSin papeleo, 100 % online\nSimula tu préstamo sin compromiso\nPide tu préstamo personal desde casa\nResolución rápida de tu solicitud",
+  "competitor": "Dinero hoy mismo en tu cuenta\nSin comisiones de apertura\nAcepta ASNEF, sin nómina\nPréstamos hasta 1.500 € en 10 minutos\nEntidad regulada con miles de clientes\nTAE desde 9,9 %. Calcula tu cuota\nConsigue tu crédito ya, sin esperas"
+ }
+}

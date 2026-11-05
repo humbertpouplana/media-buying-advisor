@@ -1,0 +1,249 @@
+account,market,roas_metric,month,spend_eur,roas
+Cuenta 1,Alemania,Conv. Value/Cost,202407,379,0
+Cuenta 1,Alemania,Conv. Value/Cost,202408,4983,0.12
+Cuenta 1,Alemania,Conv. Value/Cost,202409,4750,0.16
+Cuenta 1,Alemania,Conv. Value/Cost,202410,4177,0.58
+Cuenta 1,Alemania,Conv. Value/Cost,202411,1298,0.53
+Cuenta 1,Alemania,Conv. Value/Cost,202412,1590,0.55
+Cuenta 1,Alemania,Conv. Value/Cost,202501,4782,0.82
+Cuenta 1,Alemania,Conv. Value/Cost,202502,5989,0.48
+Cuenta 1,Alemania,Conv. Value/Cost,202503,12171,0.75
+Cuenta 1,Alemania,Conv. Value/Cost,202504,0,
+Cuenta 1,Alemania,Conv. Value/Cost,202505,8898,0.59
+Cuenta 1,Alemania,Conv. Value/Cost,202506,1525,0.24
+Cuenta 1,Alemania,Conv. Value/Cost,202507,1047,0.21
+Cuenta 1,Alemania,Conv. Value/Cost,202508,1280,1.04
+Cuenta 1,Alemania,Conv. Value/Cost,202509,1822,0.64
+Cuenta 1,Alemania,Conv. Value/Cost,202510,1589,0.4
+Cuenta 1,Alemania,Conv. Value/Cost,202511,1120,0.37
+Cuenta 1,Alemania,Conv. Value/Cost,202512,785,0.07
+Cuenta 1,Alemania,Conv. Value/Cost,202601,1168,0.15
+Cuenta 1,Alemania,Conv. Value/Cost,202602,1136,0.53
+Cuenta 1,Alemania,Conv. Value/Cost,202603,1320,0.32
+Cuenta 1,Alemania,Conv. Value/Cost,202604,260,0.16
+Cuenta 2,Polonia,Conv. Value/Cost,202312,14267,0.85
+Cuenta 2,Polonia,Conv. Value/Cost,202401,16530,0.92
+Cuenta 2,Polonia,Conv. Value/Cost,202402,5115,0.77
+Cuenta 2,Polonia,Conv. Value/Cost,202403,2805,0.83
+Cuenta 2,Polonia,Conv. Value/Cost,202404,0,
+Cuenta 2,Polonia,Conv. Value/Cost,202405,6491,0.87
+Cuenta 2,Polonia,Conv. Value/Cost,202406,1966,0.67
+Cuenta 2,Polonia,Conv. Value/Cost,202407,617,0.78
+Cuenta 2,Polonia,Conv. Value/Cost,202408,20155,0.78
+Cuenta 2,Polonia,Conv. Value/Cost,202409,18117,0.56
+Cuenta 2,Polonia,Conv. Value/Cost,202410,20066,0.59
+Cuenta 2,Polonia,Conv. Value/Cost,202411,14611,0.6
+Cuenta 2,Polonia,Conv. Value/Cost,202412,11432,0.74
+Cuenta 2,Polonia,Conv. Value/Cost,202501,12914,0.82
+Cuenta 2,Polonia,Conv. Value/Cost,202502,11547,0.71
+Cuenta 2,Polonia,Conv. Value/Cost,202503,11515,0.61
+Cuenta 2,Polonia,Conv. Value/Cost,202504,0,
+Cuenta 2,Polonia,Conv. Value/Cost,202505,7113,0.59
+Cuenta 2,Polonia,Conv. Value/Cost,202506,13029,0.66
+Cuenta 2,Polonia,Conv. Value/Cost,202507,13427,0.67
+Cuenta 2,Polonia,Conv. Value/Cost,202508,13462,1.12
+Cuenta 2,Polonia,Conv. Value/Cost,202509,21117,0.61
+Cuenta 2,Polonia,Conv. Value/Cost,202510,14887,0.85
+Cuenta 2,Polonia,Conv. Value/Cost,202511,11265,0.69
+Cuenta 2,Polonia,Conv. Value/Cost,202512,20225,1.11
+Cuenta 2,Polonia,Conv. Value/Cost,202601,24273,0.76
+Cuenta 2,Polonia,Conv. Value/Cost,202602,22108,0.85
+Cuenta 2,Polonia,Conv. Value/Cost,202603,20651,0.94
+Cuenta 2,Polonia,Conv. Value/Cost,202604,4852,0.61
+Cuenta 3,Rumanía,Conv. Value/Cost,202312,7072,0.34
+Cuenta 3,Rumanía,Conv. Value/Cost,202401,8307,0.24
+Cuenta 3,Rumanía,Conv. Value/Cost,202402,2182,0.37
+Cuenta 3,Rumanía,Conv. Value/Cost,202403,1192,0.27
+Cuenta 3,Rumanía,Conv. Value/Cost,202404,475,0.4
+Cuenta 3,Rumanía,Conv. Value/Cost,202405,1171,0.31
+Cuenta 3,Rumanía,Conv. Value/Cost,202406,397,0.44
+Cuenta 3,Rumanía,Conv. Value/Cost,202407,366,0.38
+Cuenta 3,Rumanía,Conv. Value/Cost,202408,9201,0.56
+Cuenta 3,Rumanía,Conv. Value/Cost,202409,7478,0.64
+Cuenta 3,Rumanía,Conv. Value/Cost,202410,5336,0.29
+Cuenta 3,Rumanía,Conv. Value/Cost,202411,2199,0.28
+Cuenta 3,Rumanía,Conv. Value/Cost,202412,1383,0
+Cuenta 3,Rumanía,Conv. Value/Cost,202501,2154,0.24
+Cuenta 3,Rumanía,Conv. Value/Cost,202502,2523,0.48
+Cuenta 3,Rumanía,Conv. Value/Cost,202503,8443,0.48
+Cuenta 3,Rumanía,Conv. Value/Cost,202504,0,
+Cuenta 3,Rumanía,Conv. Value/Cost,202505,3630,0.54
+Cuenta 3,Rumanía,Conv. Value/Cost,202506,6797,0.54
+Cuenta 3,Rumanía,Conv. Value/Cost,202507,4902,0.61
+Cuenta 3,Rumanía,Conv. Value/Cost,202508,4550,0.69
+Cuenta 3,Rumanía,Conv. Value/Cost,202509,4132,0.68
+Cuenta 3,Rumanía,Conv. Value/Cost,202510,4597,0.48
+Cuenta 3,Rumanía,Conv. Value/Cost,202511,4198,0.54
+Cuenta 3,Rumanía,Conv. Value/Cost,202512,4235,0.57
+Cuenta 3,Rumanía,Conv. Value/Cost,202601,8120,0.41
+Cuenta 3,Rumanía,Conv. Value/Cost,202602,2014,0.43
+Cuenta 3,Rumanía,Conv. Value/Cost,202603,2697,0.12
+Cuenta 3,Rumanía,Conv. Value/Cost,202604,1213,0.15
+Cuenta 4,Colombia,N/A,202312,159,
+Cuenta 4,Colombia,N/A,202401,192,
+Cuenta 4,Colombia,N/A,202402,33,
+Cuenta 4,Colombia,N/A,202403,28,
+Cuenta 4,Colombia,N/A,202404,8,
+Cuenta 4,Colombia,N/A,202405,48,
+Cuenta 4,Colombia,N/A,202406,22,
+Cuenta 4,Colombia,N/A,202407,4,
+Cuenta 4,Colombia,N/A,202408,181,
+Cuenta 4,Colombia,N/A,202409,212,
+Cuenta 4,Colombia,N/A,202410,198,
+Cuenta 4,Colombia,N/A,202411,181,
+Cuenta 4,Colombia,N/A,202412,210,
+Cuenta 4,Colombia,N/A,202501,184,
+Cuenta 4,Colombia,N/A,202502,181,
+Cuenta 4,Colombia,N/A,202503,212,
+Cuenta 4,Colombia,N/A,202504,0,
+Cuenta 4,Colombia,N/A,202505,127,
+Cuenta 4,Colombia,N/A,202506,30,
+Cuenta 4,Colombia,N/A,202507,21,
+Cuenta 4,Colombia,N/A,202508,24,
+Cuenta 4,Colombia,N/A,202509,30,
+Cuenta 4,Colombia,N/A,202510,27,
+Cuenta 4,Colombia,N/A,202511,23,
+Cuenta 4,Colombia,N/A,202512,29,
+Cuenta 4,Colombia,N/A,202601,28,
+Cuenta 4,Colombia,N/A,202602,29,
+Cuenta 4,Colombia,N/A,202603,26,
+Cuenta 4,Colombia,N/A,202604,10,
+Cuenta 5,España,Conv. Value/Cost,202312,15362,0.59
+Cuenta 5,España,Conv. Value/Cost,202401,16672,0.56
+Cuenta 5,España,Conv. Value/Cost,202402,4770,0.45
+Cuenta 5,España,Conv. Value/Cost,202403,1294,0.23
+Cuenta 5,España,Conv. Value/Cost,202404,1524,0.75
+Cuenta 5,España,Conv. Value/Cost,202405,25520,0.91
+Cuenta 5,España,Conv. Value/Cost,202406,4210,0.79
+Cuenta 5,España,Conv. Value/Cost,202407,1672,1.07
+Cuenta 5,España,Conv. Value/Cost,202408,26464,0.97
+Cuenta 5,España,Conv. Value/Cost,202409,35094,0.79
+Cuenta 5,España,Conv. Value/Cost,202410,35024,1.05
+Cuenta 5,España,Conv. Value/Cost,202411,27466,1.1
+Cuenta 5,España,Conv. Value/Cost,202412,21303,1.3
+Cuenta 5,España,Conv. Value/Cost,202501,18078,1.27
+Cuenta 5,España,Conv. Value/Cost,202502,24274,1.03
+Cuenta 5,España,Conv. Value/Cost,202503,35077,1.06
+Cuenta 5,España,Conv. Value/Cost,202504,0,
+Cuenta 5,España,Conv. Value/Cost,202505,11513,0.95
+Cuenta 5,España,Conv. Value/Cost,202506,11447,1.05
+Cuenta 5,España,Conv. Value/Cost,202507,11540,0.78
+Cuenta 5,España,Conv. Value/Cost,202508,5116,1.07
+Cuenta 5,España,Conv. Value/Cost,202509,17667,0.81
+Cuenta 5,España,Conv. Value/Cost,202510,8608,0.82
+Cuenta 5,España,Conv. Value/Cost,202511,8149,0.88
+Cuenta 5,España,Conv. Value/Cost,202512,6567,1.08
+Cuenta 5,España,Conv. Value/Cost,202601,8238,0.99
+Cuenta 5,España,Conv. Value/Cost,202602,10046,1
+Cuenta 5,España,Conv. Value/Cost,202603,9051,0.91
+Cuenta 5,España,Conv. Value/Cost,202604,2314,0.71
+Cuenta 6,México,Conv. Value/Cost,202312,9325,0.23
+Cuenta 6,México,Conv. Value/Cost,202401,11005,0.27
+Cuenta 6,México,Conv. Value/Cost,202402,3599,0.41
+Cuenta 6,México,Conv. Value/Cost,202403,4349,0.45
+Cuenta 6,México,Conv. Value/Cost,202404,1496,0.5
+Cuenta 6,México,Conv. Value/Cost,202405,7960,0.43
+Cuenta 6,México,Conv. Value/Cost,202406,5216,0.41
+Cuenta 6,México,Conv. Value/Cost,202407,1059,0.38
+Cuenta 6,México,Conv. Value/Cost,202408,30335,0.39
+Cuenta 6,México,Conv. Value/Cost,202409,35820,0.59
+Cuenta 6,México,Conv. Value/Cost,202410,41977,0.69
+Cuenta 6,México,Conv. Value/Cost,202411,32456,0.69
+Cuenta 6,México,Conv. Value/Cost,202412,28717,0.41
+Cuenta 6,México,Conv. Value/Cost,202501,30695,0.7
+Cuenta 6,México,Conv. Value/Cost,202502,29739,0.55
+Cuenta 6,México,Conv. Value/Cost,202503,51242,0.7
+Cuenta 6,México,Conv. Value/Cost,202504,0,
+Cuenta 6,México,Conv. Value/Cost,202505,33401,0.87
+Cuenta 6,México,Conv. Value/Cost,202506,59458,0.86
+Cuenta 6,México,Conv. Value/Cost,202507,47426,0.91
+Cuenta 6,México,Conv. Value/Cost,202508,56550,0.86
+Cuenta 6,México,Conv. Value/Cost,202509,66580,0.91
+Cuenta 6,México,Conv. Value/Cost,202510,64465,1.02
+Cuenta 6,México,Conv. Value/Cost,202511,68491,0.82
+Cuenta 6,México,Conv. Value/Cost,202512,53621,0.8
+Cuenta 6,México,Conv. Value/Cost,202601,58254,0.77
+Cuenta 6,México,Conv. Value/Cost,202602,61035,0.76
+Cuenta 6,México,Conv. Value/Cost,202603,63203,0.77
+Cuenta 6,México,Conv. Value/Cost,202604,14924,0.94
+Cuenta 7,España,ROAS (Sale+Bin),202312,76209,0.8
+Cuenta 7,España,ROAS (Sale+Bin),202401,87470,0.73
+Cuenta 7,España,ROAS (Sale+Bin),202402,15000,0.4
+Cuenta 7,España,ROAS (Sale+Bin),202403,6108,0.51
+Cuenta 7,España,ROAS (Sale+Bin),202404,4121,0.74
+Cuenta 7,España,ROAS (Sale+Bin),202405,2369,0.46
+Cuenta 7,España,ROAS (Sale+Bin),202406,9039,0.69
+Cuenta 7,España,ROAS (Sale+Bin),202407,1239,0.56
+Cuenta 7,España,ROAS (Sale+Bin),202408,32882,0.5
+Cuenta 7,España,ROAS (Sale+Bin),202409,21020,0.38
+Cuenta 7,España,ROAS (Sale+Bin),202410,1592,1.76
+Cuenta 7,España,ROAS (Sale+Bin),202411,1316,1.21
+Cuenta 7,España,ROAS (Sale+Bin),202412,2150,1.25
+Cuenta 7,España,ROAS (Sale+Bin),202501,2065,0.4
+Cuenta 7,España,ROAS (Sale+Bin),202502,2441,1.29
+Cuenta 7,España,ROAS (Sale+Bin),202503,721,2.13
+Cuenta 7,España,ROAS (Sale+Bin),202504,10374,0.38
+Cuenta 7,España,ROAS (Sale+Bin),202505,8274,0.6
+Cuenta 7,España,ROAS (Sale+Bin),202506,3292,0.56
+Cuenta 7,España,ROAS (Sale+Bin),202507,2244,1.26
+Cuenta 7,España,ROAS (Sale+Bin),202508,4069,1.89
+Cuenta 7,España,ROAS (Sale+Bin),202509,5560,0.88
+Cuenta 7,España,ROAS (Sale+Bin),202510,5364,0.62
+Cuenta 7,España,ROAS (Sale+Bin),202511,9065,0.78
+Cuenta 7,España,ROAS (Sale+Bin),202512,2364,1.95
+Cuenta 7,España,ROAS (Sale+Bin),202601,2457,1.38
+Cuenta 7,España,ROAS (Sale+Bin),202602,2001,1.45
+Cuenta 7,España,ROAS (Sale+Bin),202603,2121,1.17
+Cuenta 7,España,ROAS (Sale+Bin),202604,607,1.43
+Cuenta 8,España,ROAS (Sale+Bin),202405,14613,0.52
+Cuenta 8,España,ROAS (Sale+Bin),202406,1623,0.6
+Cuenta 8,España,ROAS (Sale+Bin),202407,1604,0.84
+Cuenta 8,España,ROAS (Sale+Bin),202408,70500,0.73
+Cuenta 8,España,ROAS (Sale+Bin),202409,45040,0.82
+Cuenta 8,España,ROAS (Sale+Bin),202410,37176,0.67
+Cuenta 8,España,ROAS (Sale+Bin),202411,40364,0.8
+Cuenta 8,España,ROAS (Sale+Bin),202412,32334,0.87
+Cuenta 8,España,ROAS (Sale+Bin),202501,15883,0.64
+Cuenta 8,España,ROAS (Sale+Bin),202502,23612,0.48
+Cuenta 8,España,ROAS (Sale+Bin),202503,63436,0.56
+Cuenta 8,España,ROAS (Sale+Bin),202504,0,
+Cuenta 8,España,ROAS (Sale+Bin),202505,34533,0.71
+Cuenta 8,España,ROAS (Sale+Bin),202506,43185,0.75
+Cuenta 8,España,ROAS (Sale+Bin),202507,30345,0.92
+Cuenta 8,España,ROAS (Sale+Bin),202508,42340,0.75
+Cuenta 8,España,ROAS (Sale+Bin),202509,56007,0.77
+Cuenta 8,España,ROAS (Sale+Bin),202510,39614,0.67
+Cuenta 8,España,ROAS (Sale+Bin),202511,19702,0.77
+Cuenta 8,España,ROAS (Sale+Bin),202512,25841,0.7
+Cuenta 8,España,ROAS (Sale+Bin),202601,33415,0.68
+Cuenta 8,España,ROAS (Sale+Bin),202602,33683,0.57
+Cuenta 8,España,ROAS (Sale+Bin),202603,29964,0.51
+Cuenta 8,España,ROAS (Sale+Bin),202604,9217,0.65
+Cuenta 9,Polonia,Conv. Value/Cost,202312,3595,0.2
+Cuenta 9,Polonia,Conv. Value/Cost,202401,4310,0.37
+Cuenta 9,Polonia,Conv. Value/Cost,202402,665,0.1
+Cuenta 9,Polonia,Conv. Value/Cost,202403,499,0.16
+Cuenta 9,Polonia,Conv. Value/Cost,202405,1074,0.7
+Cuenta 9,Polonia,Conv. Value/Cost,202406,588,0.59
+Cuenta 9,Polonia,Conv. Value/Cost,202407,86,0.67
+Cuenta 9,Polonia,Conv. Value/Cost,202408,6383,0.61
+Cuenta 9,Polonia,Conv. Value/Cost,202409,7490,0.63
+Cuenta 9,Polonia,Conv. Value/Cost,202410,6536,0.54
+Cuenta 9,Polonia,Conv. Value/Cost,202411,7120,0.62
+Cuenta 9,Polonia,Conv. Value/Cost,202412,4094,0.5
+Cuenta 9,Polonia,Conv. Value/Cost,202501,7694,0.58
+Cuenta 9,Polonia,Conv. Value/Cost,202502,3700,0.5
+Cuenta 9,Polonia,Conv. Value/Cost,202503,6278,0.37
+Cuenta 9,Polonia,Conv. Value/Cost,202504,0,
+Cuenta 9,Polonia,Conv. Value/Cost,202505,968,0.03
+Cuenta 9,Polonia,Conv. Value/Cost,202506,0,0
+Cuenta 9,Polonia,Conv. Value/Cost,202507,0,0
+Cuenta 9,Polonia,Conv. Value/Cost,202508,2596,0.5
+Cuenta 9,Polonia,Conv. Value/Cost,202509,5259,0.2
+Cuenta 9,Polonia,Conv. Value/Cost,202510,5893,0.47
+Cuenta 9,Polonia,Conv. Value/Cost,202511,294,0.05
+Cuenta 9,Polonia,Conv. Value/Cost,202512,294,0.05
+Cuenta 9,Polonia,Conv. Value/Cost,202601,294,0.05
+Cuenta 9,Polonia,Conv. Value/Cost,202602,294,0.05
+Cuenta 9,Polonia,Conv. Value/Cost,202603,294,0.05
+Cuenta 9,Polonia,Conv. Value/Cost,202604,294,0.05

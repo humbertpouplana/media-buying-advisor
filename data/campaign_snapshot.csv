@@ -1,0 +1,41 @@
+account,snapshot_month,campaign,roas_last_week,roas_prev_week
+Cuenta 1,202604,demand_gen,0,0
+Cuenta 1,202604,Branded,0.02,0.03
+Cuenta 1,202604,Credit cards,0,0
+Cuenta 1,202604,Good quality,0.19,0.23
+Cuenta 1,202604,Low quality,0,0
+Cuenta 1,202604,Top keyword exact,0,0
+Cuenta 2,202604,Branded,0.83,0.47
+Cuenta 2,202604,Chwilówki,0.61,1.01
+Cuenta 2,202604,Chwilówki low quality,0.14,1.14
+Cuenta 2,202604,Pożyczki low quality,0,0
+Cuenta 2,202604,Top keyword exact,0,0
+Cuenta 2,202604,Pożyczki,0,0
+Cuenta 3,202604,Branded,8.62,0.37
+Cuenta 3,202604,Non-branded 2026,0.07,0.35
+Cuenta 3,202604,Low quality,0.14,0.14
+Cuenta 3,202604,Test keyword,0.04,0.13
+Cuenta 3,202604,Performance max,0,0
+Cuenta 5,202604,Prestamos Low quality,0,0
+Cuenta 5,202604,Prestamos,0.72,0.76
+Cuenta 5,202604,Dinero,0.12,0.71
+Cuenta 5,202604,Creditos Low quality,0.8,1.01
+Cuenta 5,202604,Creditos,0.96,0.94
+Cuenta 5,202604,Branded,0.34,0.27
+Cuenta 6,202604,Low quality,0.91,1
+Cuenta 6,202604,Prestamos,1.08,0.81
+Cuenta 6,202604,Dinero,1.11,0.86
+Cuenta 6,202604,Creditos low quality,0,0
+Cuenta 6,202604,Creditos,0,0
+Cuenta 6,202604,Branded,0,0
+Cuenta 7,202604,Branded,1.55,1.06
+Cuenta 7,202604,Competitors,0.89,0.74
+Cuenta 7,202604,Good quality | Creditos | IBAGs,0.52,0.63
+Cuenta 7,202604,Good quality | Prestamos | IBAGs,0.77,0.63
+Cuenta 7,202604,Top keywords exact,0.33,0.47
+Cuenta 8,202604,Performance Max,0.74,0.95
+Cuenta 8,202604,Branded,0.09,0.48
+Cuenta 8,202604,Competitors,0.06,1.22
+Cuenta 8,202604,Good quality,,
+Cuenta 8,202604,Good quality Creditos IBAGS | Weekend,,
+Cuenta 8,202604,Good quality Prestamos IBAGS,,
